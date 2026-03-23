@@ -685,7 +685,28 @@ Finance_Tracker/
 
 ### Deployment
 - Git repository: https://github.com/Asim3005/Expense-tracker.git
-- Latest commit: cfed76c - Complete frontend implementation with modern UI
+- Latest commit: fcc3cb7 - fix: Resolve database connection issues
+
+### Recent Fixes (2026-03-23)
+- Fixed backend startup issues on Windows (MINGW64) by using direct Python path
+- Resolved "Failed to fetch" errors by ensuring both servers are running
+- Backend now runs correctly using: `backend/.venv/Scripts/python.exe -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload`
+- Frontend runs on: `http://localhost:3000`
+- Backend runs on: `http://localhost:8000`
+
+### Running the Application
+To run the application locally:
+1. **Start Backend:**
+   ```bash
+   cd backend
+   .venv/Scripts/python.exe -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+   ```
+2. **Start Frontend:**
+   ```bash
+   cd frontend
+   npm run dev
+   ```
+3. **Access Application:** Open http://localhost:3000 in your browser
 
 ### Remaining Tasks (Optional)
 - Manual testing of all user flows (servers running)
