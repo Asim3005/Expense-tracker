@@ -7,21 +7,29 @@ The Personal Finance Tracker is a full-stack web application that enables users 
 ### Core Features
 
 - Transaction Management: Add, edit, and delete income/expense transactions
-- Categories: Categorize transactions with custom categories
-- Dashboard: View account balance, total income, and total expenses
-- Transaction History: Browse and filter transaction records
-- Analytics: Visual representation of spending by category
+- Categories: Categorize transactions with custom categories (create, edit, delete)
+- Dashboard: View account balance, total income, total expenses, and recent transactions
+- Transaction History: Browse and filter transaction records with advanced filters
+- Analytics: Visual representation of spending by category and monthly trends
+- Budget Tracking: Track spending against budget limits with progress indicators
+- Settings: Configure application preferences
+- Theme Support: Dark/light mode with system preference detection
 - Search: Search transactions by description or category
+- Responsive Design: Mobile-first layout with collapsible sidebar
 
 ---
 
 ## Tech Stack
 
 ### Frontend
-- **Framework**: Next.js (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
+- **Framework**: Next.js 16.1.6 (App Router, Turbopack)
+- **Language**: TypeScript 5
+- **Styling**: Tailwind CSS 4
 - **HTTP Client**: fetch API (built-in browser API)
+- **UI Components**: Custom component library (Button, Card, Dialog, etc.)
+- **Charts**: Recharts 3.7.0
+- **Icons**: Lucide React 0.575.0
+- **Date Utilities**: date-fns 4.1.0
 
 ### Backend
 - **Framework**: FastAPI (Python)
@@ -105,27 +113,75 @@ The Personal Finance Tracker is a full-stack web application that enables users 
 Finance_Tracker/
 ├── frontend/                 # Next.js Application
 │   ├── app/
-│   │   ├── layout.tsx
-│   │   ├── page.tsx          # Dashboard
+│   │   ├── layout.tsx       # Root layout with theme provider
+│   │   ├── globals.css       # Global styles with CSS variables
+│   │   ├── page.tsx          # Dashboard page
 │   │   ├── transactions/
-│   │   │   └── page.tsx      # Transactions list
-│   │   └── analytics/
-│   │       └── page.tsx      # Analytics page
+│   │   │   └── page.tsx      # Transactions list page
+│   │   ├── analytics/
+│   │   │   └── page.tsx      # Analytics page
+│   │   ├── categories/
+│   │   │   └── page.tsx      # Categories management page
+│   │   ├── budget/
+│   │   │   └── page.tsx      # Budget tracking page
+│   │   └── settings/
+│   │       └── page.tsx      # Settings page
 │   ├── components/
-│   │   ├── TransactionForm.tsx
-│   │   ├── TransactionList.tsx
-│   │   ├── TransactionEditModal.tsx
-│   │   ├── CategorySelect.tsx
-│   │   ├── StatsCard.tsx
-│   │   ├── ExpenseChart.tsx
-│   │   ├── MonthlyTrend.tsx
-│   │   ├── DashboardContent.tsx
-│   │   ├── AnalyticsContent.tsx
-│   │   └── TransactionsContent.tsx
+│   │   ├── dashboard/         # Dashboard-specific components
+│   │   │   ├── dashboard-content.tsx
+│   │   │   ├── stats-card.tsx
+│   │   │   ├── spending-chart.tsx
+│   │   │   ├── income-expense-chart.tsx
+│   │   │   └── recent-transactions.tsx
+│   │   ├── transactions/      # Transaction components
+│   │   │   ├── transactions-content.tsx
+│   │   │   ├── transactions-table.tsx
+│   │   │   └── transactions-filters.tsx
+│   │   ├── analytics/         # Analytics components
+│   │   │   └── analytics-content.tsx
+│   │   ├── categories/       # Category components
+│   │   │   ├── categories-content.tsx
+│   │   │   ├── category-card.tsx
+│   │   │   └── category-form.tsx
+│   │   ├── budget/           # Budget components
+│   │   │   ├── budget-content.tsx
+│   │   │   └── budget-progress.tsx
+│   │   ├── settings/         # Settings components
+│   │   │   └── settings-content.tsx
+│   │   ├── layout/           # Layout components
+│   │   │   └── sidebar.tsx
+│   │   ├── providers/       # React providers
+│   │   │   └── theme-provider.tsx
+│   │   └── ui/              # Reusable UI components
+│   │       ├── button.tsx
+│   │       ├── card.tsx
+│   │       ├── input.tsx
+│   │       ├── label.tsx
+│   │       ├── select.tsx
+│   │       ├── textarea.tsx
+│   │       ├── checkbox.tsx
+│   │       ├── switch.tsx
+│   │       ├── badge.tsx
+│   │       ├── progress.tsx
+│   │       ├── dialog.tsx
+│   │       ├── separator.tsx
+│   │       ├── avatar.tsx
+│   │       ├── dropdown-menu.tsx
+│   │       ├── empty-state.tsx
+│   │       ├── skeleton.tsx
+│   │       ├── icon-picker.tsx
+│   │       ├── color-picker.tsx
+│   │       ├── toast.tsx
+│   │       └── toaster.tsx
 │   ├── lib/
 │   │   ├── api.ts            # API client functions
-│   │   └── types.ts          # TypeScript types
-│   ├── public/
+│   │   ├── types.ts          # TypeScript types
+│   │   ├── utils.ts          # Utility functions
+│   │   └── hooks/            # Custom React hooks
+│   │       ├── use-theme.ts
+│   │       ├── use-local-storage.ts
+│   │       ├── use-debounce.ts
+│   │       └── use-media-query.ts
 │   └── package.json
 │
 ├── backend/                  # FastAPI Application
@@ -236,9 +292,9 @@ Finance_Tracker/
 - [x] Create Next.js project (`npx create-next-app@latest`)
 - [x] Select TypeScript, Tailwind CSS, App Router options
 - [x] Remove default placeholder content
-- [ ] Install shadcn/ui (optional, for pre-built components)
-- [x] Create basic layout with header navigation
-- [x] Verify dev server starts with `npm run dev`
+- [x] Create custom UI component library (Button, Card, Dialog, etc.)
+- [x] Create sidebar layout with navigation
+- [x] Verify dev server starts with `pnpm dev`
 
 #### Development Configuration
 - [x] Configure CORS in FastAPI for local frontend
@@ -316,57 +372,174 @@ Finance_Tracker/
 - [x] Implement API functions for all endpoints
 
 #### Components - Layout
-- [x] Create Header component with navigation
-- [x] Create Footer component
-- [x] Create Layout wrapper
+- [x] Create Sidebar component with navigation
+- [x] Create MainContent wrapper for page content
+- [x] Implement collapsible sidebar functionality
+- [x] Add responsive design for mobile
 
 #### Components - Transactions
-- [x] Create TransactionForm component
-  - [x] Amount input field
-  - [x] Description input field
-  - [x] Type selector (income/expense)
-  - [x] Category dropdown
-  - [x] Date picker
-  - [x] Form validation
-  - [x] Submit handler
-- [x] Create TransactionList component
-  - [x] List rendering with transactions
-  - [x] Individual transaction item display
+- [x] Create TransactionsTable component
+  - [x] Table rendering with transactions
+  - [x] Individual transaction row display
+  - [x] Type badge (income/expense)
+  - [x] Category badge
   - [x] Edit button
   - [x] Delete button
-- [x] Create TransactionEdit modal/component
-  - [x] Edit form with all fields
-  - [x] Category dropdown
+- [x] Create TransactionsFilters component
   - [x] Type selector
-  - [x] Date picker
-  - [x] Update handler
-- [x] Create CategorySelect component
+  - [x] Category dropdown
+  - [x] Search input
+  - [x] Date range picker
+  - [x] Amount range inputs
+  - [x] Sort selector
+  - [x] Reset filters button
+- [x] Create TransactionsContent component
+  - [x] Integration with table and filters
+  - [x] Add transaction dialog
+  - [x] Edit transaction dialog
+  - [x] Delete confirmation dialog
+  - [x] Loading states
+  - [x] Empty states
 
 #### Components - Analytics
-- [x] Create StatsCard component for summary metrics
-- [x] Create ExpenseChart component (bar or pie chart)
-- [x] Create MonthlyTrend component (line chart)
-- [x] Install charting library (recharts or chart.js)
+- [x] Create AnalyticsContent component
+  - [x] Date range selector
+  - [x] Spending by category chart (pie/donut)
+  - [x] Monthly trend chart (line/bar)
+  - [x] Category breakdown list
+  - [x] Income vs expense comparison
+- [x] Create Dashboard StatsCard component
+  - [x] Value display with formatting
+  - [x] Icon support
+  - [x] Trend indicator (up/down)
+  - [x] Color variants (success/danger/warning/default)
+- [x] Create SpendingChart component (pie/donut)
+  - [x] Category-based breakdown
+  - [x] Color mapping
+  - [x] Legend display
+- [x] Create IncomeExpenseChart component (line/bar)
+  - [x] Monthly trend display
+  - [x] Income and expense lines
+  - [x] Hover tooltips
+- [x] Create RecentTransactions component
+  - [x] List view of recent items
+  - [x] Transaction type indicator
+  - [x] Category display
+  - [x] Date formatting
 
 #### Pages
 - [x] Create Dashboard page (`app/page.tsx`)
   - [x] Display account balance
   - [x] Display total income
   - [x] Display total expenses
-  - [x] Quick add transaction form
+  - [x] Budget progress indicator
+  - [x] Quick add transaction button
+  - [x] Spending by category chart
+  - [x] Income vs expenses chart
   - [x] Recent transactions list
+  - [x] Loading skeleton states
+  - [x] Error handling with retry
 - [x] Create Transactions page (`app/transactions/page.tsx`)
-  - [x] Full transaction list
+  - [x] Full transaction list with table
   - [x] Filter by type (income/expense)
   - [x] Filter by category
   - [x] Search by description
+  - [x] Date range filter
+  - [x] Amount range filter
   - [x] Sort by date or amount
   - [x] Pagination
+  - [x] Add transaction dialog
+  - [x] Edit transaction dialog
+  - [x] Delete confirmation
 - [x] Create Analytics page (`app/analytics/page.tsx`)
   - [x] Spending by category chart
   - [x] Monthly trend chart
   - [x] Date range selector
   - [x] Category breakdown list
+  - [x] Income vs expense analysis
+- [x] Create Categories page (`app/categories/page.tsx`)
+  - [x] Category cards grid
+  - [x] Create category dialog
+  - [x] Edit category dialog
+  - [x] Delete confirmation
+  - [x] Color picker for categories
+  - [x] Icon picker for categories
+  - [x] Display transaction count per category
+- [x] Create Budget page (`app/budget/page.tsx`)
+  - [x] Budget categories list
+  - [x] Progress indicators
+  - [x] Budget limits display
+  - [x] Visual progress bars
+- [x] Create Settings page (`app/settings/page.tsx`)
+  - [x] Theme toggle (light/dark/system)
+  - [x] Currency settings
+  - [x] Data management options
+
+#### Components - Categories
+- [x] Create CategoriesContent component
+  - [x] Grid layout for category cards
+  - [x] Add category button
+  - [x] Search/filter categories
+  - [x] Loading and empty states
+- [x] Create CategoryCard component
+  - [x] Category icon display
+  - [x] Category name
+  - [x] Transaction count
+  - [x] Edit button
+  - [x] Delete button
+  - [x] Color preview
+- [x] Create CategoryForm component
+  - [x] Name input
+  - [x] Color picker component
+  - [x] Icon picker component
+  - [x] Form validation
+  - [x] Create/Update mode support
+
+#### Components - Budget
+- [x] Create BudgetContent component
+  - [x] Budget categories list
+  - [x] Overall budget progress
+  - [x] Category-specific progress
+- [x] Create BudgetProgress component
+  - [x] Progress bar visualization
+  - [x] Percentage calculation
+  - [x] Over-budget warning state
+  - [x] Color-coded progress (safe/warning/danger)
+
+#### Components - Settings
+- [x] Create SettingsContent component
+  - [x] Theme toggle (light/dark/system)
+  - [x] Currency settings
+  - [x] Data management section
+
+#### Components - UI Library
+- [x] Create Button component (variants: default/outline/ghost, sizes)
+- [x] Create Card component (for content containers)
+- [x] Create Input component (text inputs)
+- [x] Create Label component (form labels)
+- [x] Create Select component (dropdown)
+- [x] Create Textarea component (multi-line input)
+- [x] Create Checkbox component
+- [x] Create Switch component (toggle)
+- [x] Create Badge component (small status indicators)
+- [x] Create Progress component (progress bars)
+- [x] Create Dialog component (modal dialogs)
+- [x] Create Separator component (visual dividers)
+- [x] Create Avatar component (user/profile images)
+- [x] Create DropdownMenu component
+- [x] Create EmptyState component (no data state)
+- [x] Create Skeleton component (loading placeholders)
+- [x] Create IconPicker component (emoji selection)
+- [x] Create ColorPicker component (hex color selection)
+- [x] Create Toast component (notifications)
+- [x] Create Toaster component (notification container)
+
+#### Components - Providers
+- [x] Create ThemeProvider component
+  - [x] Dark/light mode state
+  - [x] System preference detection
+  - [x] localStorage persistence
+  - [x] CSS variable updates
 
 #### State Management
 - [x] Implement data fetching with React hooks
@@ -463,13 +636,28 @@ Finance_Tracker/
 
 ## Notes
 
+### Development
 - Database: Neon PostgreSQL (serverless cloud database)
 - No authentication is required
-- No deployment configuration included
+- Package manager for frontend: pnpm
+- Package manager for backend: uv
 - API documentation available at `http://localhost:8000/docs` (Swagger UI)
 - Frontend runs on `http://localhost:3000`
 - Backend runs on `http://localhost:8000`
 - Database connection configured in backend/.env file
+
+### Component Library
+- Custom UI components built from scratch
+- Uses CSS variables for theming (light/dark mode)
+- Supports hover states, transitions, and animations
+- Consistent design system across all pages
+
+### Design System
+- Color palette defined in CSS variables
+- Spacing scale for consistent layout
+- Typography with Geist fonts
+- Responsive breakpoints (mobile, tablet, desktop)
+- Accessible keyboard navigation
 
 ---
 
@@ -478,8 +666,11 @@ Finance_Tracker/
 ### Completed
 - **Setup**: Environment, backend, and frontend initialization
 - **Backend**: Database models, schemas, migrations, services, API routes, data seeding
-- **Frontend**: All components, pages, state management, API integration
-- **Integration**: Cross-feature integration, UI polish
+- **Frontend**: All components, pages, state management, API integration, custom UI library
+- **Layout**: Sidebar navigation, responsive design, theme provider
+- **Pages**: Dashboard, Transactions, Analytics, Categories, Budget, Settings
+- **Components**: Dashboard, Transactions, Analytics, Categories, Budget, Settings, UI library
+- **Integration**: Cross-feature integration, UI polish, error handling, loading states
 - **Testing**: 46 backend tests passing, 14 frontend tests passing
 
 ### Database
@@ -490,10 +681,15 @@ Finance_Tracker/
 
 ### Running Servers
 - Backend: http://localhost:8000 (FastAPI with Uvicorn)
-- Frontend: http://localhost:3000 (Next.js)
+- Frontend: http://localhost:3000 (Next.js with Turbopack)
+
+### Deployment
+- Git repository: https://github.com/Asim3005/Expense-tracker.git
+- Latest commit: cfed76c - Complete frontend implementation with modern UI
 
 ### Remaining Tasks (Optional)
-- Manual testing of all user flows
+- Manual testing of all user flows (servers running)
 - Write tests for API client functions
 - End-to-End testing with Playwright or Cypress
-- (Optional) Add shadcn/ui components
+- Deploy frontend to production (Vercel/Netlify)
+- Deploy backend to production (Render/Railway/Fly.io)
