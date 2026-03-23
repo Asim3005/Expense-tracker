@@ -138,9 +138,9 @@ class AnalyticsService:
                 }
 
             if row.transaction_type == TransactionType.income:
-                monthly_data[key]["income"] = float(row.total)
+                monthly_data[key]["income"] = float(row.total) if row.total else 0.0
             else:
-                monthly_data[key]["expenses"] = float(row.total)
+                monthly_data[key]["expenses"] = float(row.total) if row.total else 0.0
 
         # Convert to list sorted by date
-        return sorted(monthly_data.values(), key=lambda x: x["month"], reverse=True)
+        return list(monthly_data.values())

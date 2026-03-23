@@ -18,7 +18,7 @@ class TransactionType(str, enum.Enum):
 TransactionTypeEnum = String(10)
 
 
-engine = create_async_engine(settings.database_url, echo=True)
+engine = create_async_engine(settings.database_url, echo=True, pool_size=20, max_overflow=10, pool_pre_ping=True)
 AsyncSessionLocal = async_sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
 
 
@@ -30,5 +30,7 @@ async def get_db():
     async with AsyncSessionLocal() as session:
         try:
             yield session
+        except Exception:
+            raise
         finally:
             await session.close()

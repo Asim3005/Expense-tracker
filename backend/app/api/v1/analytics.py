@@ -45,5 +45,8 @@ async def get_monthly_trend(
     db: AsyncSession = Depends(get_db),
 ):
     """Get monthly income and expense trends."""
-    service = AnalyticsService(db)
-    return await service.get_monthly_trend(months=months)
+    try:
+        service = AnalyticsService(db)
+        return await service.get_monthly_trend(months=months)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
