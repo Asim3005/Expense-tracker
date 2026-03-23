@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
+import { Sidebar, MainContent } from "@/components/layout/sidebar";
+import { Toaster, ToasterProvider } from "@/components/ui/toaster";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -15,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Personal Finance Tracker",
-  description: "Track your income, expenses, and financial goals",
+  title: "FinTrack - Personal Finance Dashboard",
+  description: "Track your income, expenses, and financial goals with a beautiful, modern dashboard",
 };
 
 export default function RootLayout({
@@ -25,17 +26,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="flex min-h-screen flex-col">
-          <Header />
-          <main className="flex-1 bg-zinc-50 dark:bg-zinc-950">
-            {children}
-          </main>
-          <Footer />
-        </div>
+        <ToasterProvider>
+          <ThemeProvider>
+            <div className="flex min-h-screen">
+              <Sidebar />
+              <MainContent>
+                {children}
+              </MainContent>
+            </div>
+            <Toaster />
+          </ThemeProvider>
+        </ToasterProvider>
       </body>
     </html>
   );

@@ -4,6 +4,7 @@ export interface Category {
   name: string;
   color: string;
   icon: string;
+  transactions_count?: number;
   created_at: string;
   updated_at: string;
 }
@@ -62,6 +63,8 @@ export interface TransactionFilter {
   search?: string;
   start_date?: string;
   end_date?: string;
+  min_amount?: number;
+  max_amount?: number;
   skip?: number;
   limit?: number;
   sort_by?: "date" | "amount";

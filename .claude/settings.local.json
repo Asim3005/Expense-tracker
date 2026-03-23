@@ -5,7 +5,22 @@
       "Bash(uv run:*)",
       "Bash(npm run dev)",
       "Bash(curl:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(npm install:*)",
+      "Bash(pnpm install)",
+      "Bash(pnpm build:*)",
+      "Bash(pnpm dev)",
+      "Bash(taskkill:*)",
+      "Bash(python -m app.main:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr :8000)",
+      "Bash(findstr:*)",
+      "mcp__ide__getDiagnostics",
+      "Bash(cd:*)",
+      "Bash(git checkout:*)",
+      "Bash(python -m uvicorn:*)",
+      "Bash(tasklist:*)",
+      "Bash(git reset:*)"
     ]
   }
 }
